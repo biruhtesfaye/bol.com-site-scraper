@@ -6,15 +6,22 @@ class ItemsScraperSpider(scrapy.Spider):
     allowed_domains = ["www.bol.com"]
     start_urls = ["https://www.bol.com/"]
 
+    page_num = 1
 
     def start_requests(self):
         if self.keyword:
-            search_url = f"https://www.bol.com/nl/nl/s/?searchtext={self.keyword}"
-            yield scrapy.Request(url=search_url, callback=self.parse)
+            while self.page_num:
+                search_url = f'https://www.bol.com/nl/nl/s/?page={self.page_num}&searchtext={self.keyword}&view=list'
+                yield scrapy.Request(url=search_url, callback=self.parse)
         else:
             scrapy.log("Please insert a correct keyword.")
 
     def parse(self, response):
+
+        if response.status == 404:
+            self.page_num = 0
+            raise scrapy.exceptions.CloseSpider("No more pages.")
+
         items = response.xpath('//li[contains(@class, "product-item--row")]')
         for item in items:
             name = item.xpath('.//ul[@class="product-creator"]//a/text()').get()
@@ -31,3 +38,5 @@ class ItemsScraperSpider(scrapy.Spider):
                 "product_price": price,
             }
 
+        self.page_num += 1
+        
