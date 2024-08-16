@@ -6,6 +6,8 @@ class ItemsScraperSpider(scrapy.Spider):
     allowed_domains = ["www.bol.com"]
     start_urls = ["https://www.bol.com/"]
 
+    # These variables will help us to go through the pagination and 
+    # to close the spider when a 404 exception encountered
     handle_httpstatus_list = [404]
     page_num = 1
 
