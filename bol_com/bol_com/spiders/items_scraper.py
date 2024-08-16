@@ -6,10 +6,12 @@ class ItemsScraperSpider(scrapy.Spider):
     allowed_domains = ["www.bol.com"]
     start_urls = ["https://www.bol.com/"]
 
+    handle_httpstatus_list = [404]
     page_num = 1
 
     def start_requests(self):
         if self.keyword:
+            self.keyword.replace(" ", "+")
             while self.page_num:
                 search_url = f'https://www.bol.com/nl/nl/s/?page={self.page_num}&searchtext={self.keyword}&view=list'
                 yield scrapy.Request(url=search_url, callback=self.parse)
@@ -21,6 +23,8 @@ class ItemsScraperSpider(scrapy.Spider):
         if response.status == 404:
             self.page_num = 0
             raise scrapy.exceptions.CloseSpider("No more pages.")
+        else:
+            self.page_num += 1
 
         items = response.xpath('//li[contains(@class, "product-item--row")]')
         for item in items:
@@ -37,6 +41,4 @@ class ItemsScraperSpider(scrapy.Spider):
                 "product_review_count": review_count,
                 "product_price": price,
             }
-
-        self.page_num += 1
         
