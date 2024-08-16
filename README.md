@@ -1,6 +1,6 @@
 # bol.com site scraper
 
-<a href="bol.com">bol.com</a> is an ecommerce site and the scraper I made will receive for keyword to search and a file name to put the resulting dataset. Then it will parse through all the pages and scrapes the products listed.
+<a href="bol.com">bol.com</a> is an e-commerce site and the scraper I made will receive a keyword to search and a file name to put the resulting dataset. Then it will parse through all the pages and scrape the products listed.
 
 ## Usage
 
@@ -20,13 +20,13 @@ cd bol_com
 ```
 
 Params:
-- **city**: city name
+- **keyword**: Search term for a product
 
-The program require one keyword argument (keyword). which is the term to be searched on bol.com. It may be 'hp laptop', 'Goorin Bros Cap', 'The Alchemist Book', etc...
+The program requires one keyword-argument (keyword). which is the term to be searched on bol.com. It may be 'hp laptop', 'Goorin Bros Cap', 'The Alchemist Book', etc...
 
 ## Output
 
-The Fields for one sample product.
+The fields for one sample product.
 
 ```
 {
